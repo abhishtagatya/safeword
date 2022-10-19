@@ -5,22 +5,26 @@ import logging
 
 import numpy as np
 import pandas as pd
-
+import nltk
 import whisper
 
 import streamlit as st
 
+from util.text import TextClean
 from model.ser_model import SER
 
 model = whisper.load_model("base")
 ser_model = SER.load('pretrained/cnn_attention_lstm_model.pt')
+
+nltk.download('stopwords')
+nltk.download('punkt')
 
 with open('safewords.json', 'r') as swfile:
     swfile_json = json.load(swfile)
 
 
 def detect_safe_words(full_text: str, safe_words: List[str]):
-    tokens = full_text.lower().split()
+    tokens = TextClean(full_text).preprocess()
 
     flag = False
     for token in tokens:
