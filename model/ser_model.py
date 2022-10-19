@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 
 import librosa
+import logging
 
 from sklearn.preprocessing import StandardScaler
 
@@ -147,7 +148,7 @@ class SER:
                 self.model_uc.load_state_dict(state_dict=torch.load(model_path))
             else:
                 self.model_uc.load_state_dict(state_dict=torch.load(model_path, map_location=torch.device('cpu')))
-            print('Loaded SER Model')
+            logging.info('Model : Loaded SER Model')
 
     @staticmethod
     def get_mel_spectrogram(audio, sample_rate):
@@ -197,9 +198,8 @@ class SER:
 
         with torch.no_grad():
             output_logits, output_softmax, attention_weights_norm = self.model_uc(X_audio_tensor)
-            print(output_softmax)
             predictions = torch.argmax(output_softmax, dim=1)
-            print(predictions, output_softmax)
+            logging.info('SER Model Pred :', predictions, output_softmax)
 
     def match_prediction(self, audio_file, match_result, sr=SAMPLE_RATE):
         duration = int(librosa.get_duration(filename=audio_file, sr=sr))
@@ -228,10 +228,9 @@ class SER:
 
         with torch.no_grad():
             output_logits, output_softmax, attention_weights_norm = self.model_uc(X_audio_tensor)
-            print(output_softmax)
             predictions = torch.argmax(output_softmax, dim=1)
+            logging.info('SER Model Pred :', predictions, output_softmax)
 
-        print(predictions[0], type(predictions))
         if predictions in match_result:
             return True
         return False
