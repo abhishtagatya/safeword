@@ -81,7 +81,7 @@ safeword_choices = st.multiselect(
 uploaded_file = st.file_uploader("Put Audio File", type=['mp3', 'm4a', 'wav'])
 
 if uploaded_file is not None:
-    logging.info('Uploaded File :', uploaded_file.name)
+    logging.info('Uploaded File : ' + uploaded_file.name)
 
     decoding_progress = 0
     decoding_progress_bar = st.progress(decoding_progress)
@@ -117,7 +117,7 @@ if uploaded_file is not None:
     decoding_progress += 40
     decoding_progress_bar.progress(decoding_progress)
 
-    logging.info('Whisper Text :', result.text)
+    logging.info('Whisper Text : ' + result.text)
     detect_safe_words(full_text=result.text, safe_words=safeword_choices)
     detect_emotion(ser_model, 'temp.mp3', [5, 6, 7, 0])
 

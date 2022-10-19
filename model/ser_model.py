@@ -199,7 +199,6 @@ class SER:
         with torch.no_grad():
             output_logits, output_softmax, attention_weights_norm = self.model_uc(X_audio_tensor)
             predictions = torch.argmax(output_softmax, dim=1)
-            logging.info('SER Model Pred : ', predictions)
 
     def match_prediction(self, audio_file, match_result, sr=SAMPLE_RATE):
         duration = int(librosa.get_duration(filename=audio_file, sr=sr))
@@ -229,7 +228,6 @@ class SER:
         with torch.no_grad():
             output_logits, output_softmax, attention_weights_norm = self.model_uc(X_audio_tensor)
             predictions = torch.argmax(output_softmax, dim=1)
-            logging.info('SER Model Pred : ', predictions)
 
         if predictions in match_result:
             return True
